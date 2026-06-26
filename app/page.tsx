@@ -1,8 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { FormPage } from "@/components/AddGameForm";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
-  <div><Button>hello mars</Button></div>
+    <main className="relative flex min-h-screen items-center justify-center">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+
+      <FormPage />
+    </main>
   );
 }
