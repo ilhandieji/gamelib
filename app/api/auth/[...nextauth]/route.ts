@@ -1,81 +1,20 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-
 import { prisma } from "@/lib/prisma";
 
-const handler = NextAuth({
-  providers: [
-    CredentialsProvider({
-      name: "Credentials",
+export async function POST(req: Request) {
+  const body = await req.json();
 
-      credentials: {
-        title: {
-          label: "Username",
-          type: "text",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
-      },
+  const { title, password } = body;
 
-      async authorize(credentials) {
-        const username = credentials?.title;
-        const password = credentials?.password;
+  if (!title || !password) {
+    return Response.json({ error: "Missing fields" }, { status: 400 });
+  }
 
-        if (!username || !password) {
-          return null;
-        }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            username,
-          },
-        });
-
-        if (!user) {
-          return null;
-        }
-
-        // فعلاً بدون bcrypt
-        if (user.password !== password) {
-          return null;
-        }
-
-        return {
-          id: user.id.toString(),
-          name: user.username,
-          username: user.username,
-        };
-      },
-    }),
-  ],
-
-  session: {
-    strategy: "jwt",
-  },
-
-  pages: {
-    signIn: "/",
-  },
-
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.username = (user as any).username;
-      }
-
-      return token;
+  const user = await prisma.user.create({
+    data: {
+      username: title,
+      password: password
     },
+  });
 
-    async session({ session, token }) {
-      if (session.user) {
-        (session.user as any).username = token.username;
-      }
-
-      return session;
-    },
-  },
-});
-
-export { handler as GET, handler as POST };
+  return Response.json(user);
+}

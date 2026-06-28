@@ -45,15 +45,21 @@ export function FormPage() {
     },
   });
 
-  function onSubmit(data: FormValues) {
-    toast("Account Created", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "top-center",
+  async function onSubmit(data: FormValues) {
+    const res = await fetch("/api/auth/[...nextauth]", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
+
+    if (!res.ok) {
+      toast("Error creating user");
+      return;
+    }
+
+    toast("Account Created");
   }
 
   return (
@@ -124,6 +130,10 @@ export function FormPage() {
 
         <Button type="submit" form="register-form">
           Submit
+        </Button>
+
+        <Button type="button" variant="outline" onClick={() => console.log("login") } >
+          Login
         </Button>
       </CardFooter>
     </Card>
