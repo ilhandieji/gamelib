@@ -137,14 +137,6 @@ export function SignUpForm() {
         <Button type="submit" form="register-form">
           Submit
         </Button>
-
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => console.log("login")}
-        >
-          Login
-        </Button>
       </CardFooter>
     </Card>
   );

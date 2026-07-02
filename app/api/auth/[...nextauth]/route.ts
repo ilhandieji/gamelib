@@ -26,7 +26,7 @@ const authOptions: NextAuthOptions = {
 
         const username = String(credentials.username).trim();
         const password = String(credentials.password);
-        const isSignup = String(credentials.signup ?? "false").toLowerCase() === "true";
+        const isSignup = credentials.signup === "true";
 
         if (username.length < MIN_USERNAME_LENGTH || username.length > MAX_USERNAME_LENGTH) {
           throw new Error(
@@ -41,19 +41,20 @@ const authOptions: NextAuthOptions = {
         }
 
         if (isSignup) {
-          const existingUser = await prisma.user.findUnique({
-            where: { username },
-          });
+          try {
+            const newUser = await prisma.user.create({
+              data: { username, password },
+            });
 
-          if (existingUser) {
-            throw new Error("Username already exists.");
+            return { id: String(newUser.id), username: newUser.username };
+          } catch (error: any) {
+            // Handle unique constraint violation on username
+            if (error.code === "P2002" && error.meta?.target?.includes("username")) {
+              throw new Error("Username already exists.");
+            }
+            // Re-throw other errors
+            throw error;
           }
-
-          const newUser = await prisma.user.create({
-            data: { username, password },
-          });
-
-          return { id: String(newUser.id), username: newUser.username };
         }
 
         const user = await prisma.user.findUnique({
