@@ -47,17 +47,16 @@ export function SignUpForm() {
   });
 
   async function onSubmit(data: FormValues) {
-    const result = await signIn("credentials", {
-      redirect: false,
-      username: data.username,
-      password: data.password,
-      signup: true,
+    const result = await fetch("/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: data.username,
+        password: data.password,
+      }),
     });
-
-    if (result?.error) {
-      toast(result.error);
-      return;
-    }
 
     if (result?.ok) {
       toast("Account created successfully.");
