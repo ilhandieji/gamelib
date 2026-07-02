@@ -1,4 +1,4 @@
-import { FormPage } from "@/components/AddGameForm";
+import { SignUpForm } from "@/components/SignUpForm";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
@@ -8,7 +8,7 @@ export default function Home() {
         <ThemeToggle />
       </div>
 
-      <FormPage />
+      <SignUpForm />
     </main>
   );
 }

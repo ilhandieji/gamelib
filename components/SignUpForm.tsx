@@ -3,6 +3,7 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -23,7 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  title: z
+  username: z
     .string()
     .min(3, "Username must be at least 3 characters.")
     .max(32, "Username must be at most 32 characters."),
@@ -36,30 +37,35 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function FormPage() {
+export function SignUpForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      username: "",
       password: "",
     },
   });
 
   async function onSubmit(data: FormValues) {
-    const res = await fetch("/api/auth/[...nextauth]", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    const result = await signIn("credentials", {
+      redirect: false,
+      username: data.username,
+      password: data.password,
+      signup: true,
     });
 
-    if (!res.ok) {
-      toast("Error creating user");
+    if (result?.error) {
+      toast(result.error);
       return;
     }
 
-    toast("Account Created");
+    if (result?.ok) {
+      toast("Account created successfully.");
+      form.reset();
+      return;
+    }
+
+    toast("Unable to create account.");
   }
 
   return (
@@ -76,7 +82,7 @@ export function FormPage() {
         >
           <FieldGroup>
             <Controller
-              name="title"
+              name="username"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -132,7 +138,11 @@ export function FormPage() {
           Submit
         </Button>
 
-        <Button type="button" variant="outline" onClick={() => console.log("login") } >
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => console.log("login")}
+        >
           Login
         </Button>
       </CardFooter>
