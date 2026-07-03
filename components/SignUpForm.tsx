@@ -1,9 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -22,7 +20,6 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 const formSchema = z.object({
   username: z
