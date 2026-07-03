@@ -1,0 +1,26 @@
+-- AlterTable
+ALTER TABLE "User"
+ADD COLUMN IF NOT EXISTS "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE "Session"
+RENAME COLUMN "createdAT" TO "createdAt";
+
+ALTER TABLE "Session"
+ADD COLUMN IF NOT EXISTS "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS "lastSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN IF NOT EXISTS "expiresAt" TIMESTAMP(3),
+ADD COLUMN IF NOT EXISTS "ip" TEXT NOT NULL DEFAULT 'unknown',
+ADD COLUMN IF NOT EXISTS "userAgent" TEXT NOT NULL DEFAULT 'unknown';
+
+ALTER TABLE "LoginHistory"
+ALTER COLUMN "ip" SET DEFAULT 'unknown',
+ALTER COLUMN "userAgent" SET DEFAULT 'unknown';
+
+-- CreateIndex
+CREATE INDEX IF NOT EXISTS "Session_userId_idx" ON "Session"("userId");
+CREATE INDEX IF NOT EXISTS "Session_expiresAt_idx" ON "Session"("expiresAt");
+CREATE INDEX IF NOT EXISTS "Session_lastSeenAt_idx" ON "Session"("lastSeenAt");
+CREATE INDEX IF NOT EXISTS "LoginHistory_userId_idx" ON "LoginHistory"("userId");
+CREATE INDEX IF NOT EXISTS "LoginHistory_createdAt_idx" ON "LoginHistory"("createdAt");
+CREATE INDEX IF NOT EXISTS "User_username_idx" ON "User"("username");

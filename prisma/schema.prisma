@@ -11,23 +11,39 @@ model User {
   id           Int            @id @default(autoincrement())
   username     String         @unique
   password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   loginHistory LoginHistory[]
   sessions     Session[]
+
+  @@index([username])
 }
 
 model Session {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  createdAT DateTime @default(now())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lastSeenAt DateTime @default(now())
+  expiresAt  DateTime?
+  ip         String   @default("unknown")
+  userAgent  String   @default("unknown")
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([lastSeenAt])
 }
 
 model LoginHistory {
   id        Int      @id @default(autoincrement())
-  ip        String
-  userAgent String
+  ip        String   @default("unknown")
+  userAgent String   @default("unknown")
   createdAt DateTime @default(now())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }
