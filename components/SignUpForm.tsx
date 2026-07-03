@@ -64,7 +64,9 @@ export function SignUpForm() {
       return;
     }
 
-    toast("Unable to create account.");
+    // Parse the error response from the backend
+    const errorData = await result.json();
+    toast(errorData.error || "Unable to create account.");
   }
 
   return (
