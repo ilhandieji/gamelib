@@ -4,59 +4,80 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
-import {
+import { Input } from "@/components/ui/input";
+
+import
+{
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
+
+import
+{
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 
-const formSchema = z.object({
-  username: z
-    .string()
-    .min(3, "Username must be at least 3 characters.")
-    .max(32, "Username must be at most 32 characters."),
-
-  password: z
-    .string()
-    .min(10, "Password must be at least 10 characters.")
-    .max(100, "Password must be at most 100 characters."),
-});
+const formSchema = z.object
+(
+  {
+    username: z
+      .string()
+      .min(3, "Username must be at least 3 characters.")
+      .max(32, "Username must be at most 32 characters."),
+    
+    password: z
+      .string()
+      .min(10, "Password must be at least 10 characters.")
+      .max(100, "Password must be at most 100 characters."),
+  }
+);
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function SignUpForm() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
-  });
+export function SignUpForm() 
+{
+  const form = useForm<FormValues>
+  (
+    {
+      resolver: zodResolver(formSchema),
+      defaultValues:
+      {
+        username: "",
+        password: "",
+      },
+    }
+  );
 
-  async function onSubmit(data: FormValues) {
-    const result = await fetch("/api/signup", {
+  async function onSubmit(data: FormValues)
+  {
+    const result = await fetch
+  (
+    "/api/signup", 
+    {
       method: "POST",
-      headers: {
+      headers: 
+      {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        username: data.username,
-        password: data.password,
-      }),
-    });
+      body: JSON.stringify
+      (
+        {
+          username: data.username,
+          password: data.password,
+        }
+      ),
+    }
+  );
 
-    if (result?.ok) {
+    if (result?.ok)
+    {
       toast("Account created successfully.");
       form.reset();
       return;

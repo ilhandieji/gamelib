@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/dist/client/link";
 import * as React from "react";
 
-export default function Home() {
+export default function Home()
+{
   return (
     <div className="relative flex min-h-screen items-center justify-center">
       <div className="absolute top-4 right-4">
