@@ -8,10 +8,6 @@ export default function Home()
 {
   return (
     <div className="relative flex min-h-screen items-center justify-center">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-
       <div className="flex flex-col items-center min-w-screen">
         <SignUpForm />
         <div className="flex justify-center mt-2.5">

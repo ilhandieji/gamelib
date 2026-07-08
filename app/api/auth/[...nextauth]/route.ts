@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
 
           return {
             id: String(user.id),
+            name: user.username,
             username: user.username,
             sessionToken: token,
           };
@@ -65,8 +66,9 @@ export const authOptions: NextAuthOptions = {
     {
       if (user) 
       {
-        const authUser = user as typeof user & { id: string; sessionToken?: string };
+        const authUser = user as typeof user & { id: string; sessionToken?: string; name?: string };
         token.sub = authUser.id;
+        token.name = authUser.name;
         const jwtToken = token as JWT & { sessionToken?: string };
         jwtToken.sessionToken = authUser.sessionToken;
       }
