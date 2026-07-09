@@ -8,10 +8,9 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/dist/client/components/navigation";
 import { signIn } from "next-auth/react";
-
 import { Button } from "@/components/ui/button";
-import
-{
+
+import {
   Card,
   CardContent,
   CardFooter,
@@ -19,62 +18,47 @@ import
   CardTitle,
 } from "@/components/ui/card";
 
-import
-{
+import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 
-const formSchema = z.object
-(
-  {
-    username: z
-      .string()
-      .min(3, "Username required.")
-      .max(32, "Username required."),
-    password: z
-      .string()
-      .min(10, "Password required.")
-      .max(100, "Password required."),
-  }
-);
+const formSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username required.")
+    .max(32, "Username required."),
+  password: z
+    .string()
+    .min(10, "Password required.")
+    .max(100, "Password required."),
+});
 
 type LoginValues = z.infer<typeof formSchema>;
 
-export function LoginForm()
-{
+export function LoginForm() {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>
-  (
-    {
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: 
-    {
+    defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  async function onSubmit(data: LoginValues)
-  {
-    const result = await signIn
-    ("credentials",
-      {
-        username: data.username,
-        password: data.password,
-        redirect: false,
-      }
-    );
+  async function onSubmit(data: LoginValues) {
+    const result = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: false,
+    });
 
-    if (result?.ok) 
-    {
+    if (result?.ok) {
       toast("Logged in successfully!");
       router.push("/dashboard"); // Redirect after login
-    }
-    else
-    {
+    } else {
       toast(result?.error || "Invalid username or password");
     }
   }
@@ -82,7 +66,9 @@ export function LoginForm()
   return (
     <Card className="w-full sm:max-w-md">
       <CardHeader>
-        <CardTitle>Login to Account</CardTitle>
+        <CardTitle className="flex justify-center align-text-bottom text-lg">
+          Login to Account
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
