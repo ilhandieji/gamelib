@@ -155,3 +155,15 @@
 .my-custom-btn {
   background-color: var(--custom-yellow);
 }
+
+.neon-blue {
+  background-color: #0cc4d1;
+}
+
+.suggested-blue {
+  background-color: #0036FF;
+}
+
+.suggested-yellow {
+  background-color: #B5F800;
+}

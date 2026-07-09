@@ -1,13 +1,13 @@
-import { LoginForm } from '@/components/LoginForm';
-import { Button } from '@/components/ui/button';
-import Link from 'next/dist/client/link';
-import React from 'react'
+import { SignUpForm } from "@/components/SignUpForm";
+import { Button } from "@/components/ui/button";
+import Link from "next/dist/client/link";
+import * as React from "react";
 
-const login = () => {
+export default function Home() {
   return (
     <div className="relative flex min-h-screen items-center justify-center">
       <div className="flex flex-col items-center min-w-screen">
-        <LoginForm />
+        <SignUpForm />
         <div className="flex justify-center mt-2.5">
           <Button
             asChild
@@ -15,12 +15,10 @@ const login = () => {
             size="lg"
             className="neon-blue text-black"
           >
-            <Link href="/signup">Don't have an account? Sign up</Link>
+            <Link href="/login">Have an account? login</Link>
           </Button>
         </div>
       </div>
     </div>
   );
 }
-
-export default login

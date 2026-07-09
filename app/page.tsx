@@ -1,18 +1,34 @@
-import { SignUpForm } from "@/components/SignUpForm";
 import { Button } from "@/components/ui/button";
+import { redirect } from "next/dist/client/components/navigation";
 import Link from "next/dist/client/link";
 import * as React from "react";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
+import { Gamepad2 } from "lucide-react";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+  if (session?.user) {
+    redirect("/dashboard");
+  }
+
   return (
-    <div className="relative flex min-h-screen items-center justify-center">
-      <div className="flex flex-col items-center min-w-screen">
-        <SignUpForm />
-        <div className="flex justify-center mt-2.5">
-          <Button asChild variant="outline" size="lg" className="my-custom-btn">
-            <Link href="/login">Have an account? login</Link>
-          </Button>
-        </div>
+    <div className="relative flex flex-col min-h-screen items-center justify-center text-center">
+      <h1 className="relative flex flex-col items-center justify-center">
+        <Gamepad2 className="size-16" color="#3a5fb4" /> Welcome to the Game
+        Library
+      </h1>
+      <div className="flex gap-2 justify-center mt-2.5">
+        <Button className="w-28 h-10">
+          <Link href="/login">Login</Link>
+        </Button>
+        <span className="flex felx col items-center justify-center text-lg">
+          or
+        </span>
+        <Button className="w-28 h-10">
+          <Link href="/signup">Signup</Link>
+        </Button>
       </div>
     </div>
   );
