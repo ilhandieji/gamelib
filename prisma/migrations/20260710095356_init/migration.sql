@@ -1,0 +1,48 @@
+-- CreateTable
+CREATE TABLE "Games" (
+    "id" BIGINT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "name" TEXT,
+    "released" TIMESTAMP(3),
+    "background_image" TEXT,
+    "playtime" INTEGER,
+    "suggestions_count" INTEGER,
+    "saturated_color" TEXT,
+    "dominant_color" TEXT,
+    "platforms" TEXT,
+    "stores" TEXT,
+    "developers" TEXT,
+    "genres" TEXT,
+    "publishers" TEXT,
+    "tags" TEXT,
+    "esrb_rating" TEXT,
+    "metacritic_url" TEXT,
+    "clip" TEXT,
+    "name_original" TEXT,
+    "background_image_additional" TEXT,
+    "website" TEXT,
+    "short_screenshots" TEXT,
+    "creators_count" INTEGER,
+    "metacritic_platforms" TEXT,
+    "screenshots_count" INTEGER,
+    "parent_platforms" TEXT,
+    "description" TEXT,
+    "description_raw" TEXT,
+    "metacritic" INTEGER,
+    "achievements_count" INTEGER,
+    "alternative_names" TEXT,
+    "parent_achievements_count" INTEGER,
+    "game_series_count" INTEGER,
+    "additions_count" INTEGER,
+    "movies_count" INTEGER,
+    "reddit_url" TEXT,
+    "reddit_name" TEXT,
+    "reddit_description" TEXT,
+    "reddit_logo" TEXT,
+    "tba" TEXT,
+
+    CONSTRAINT "Games_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Games_slug_key" ON "Games"("slug");

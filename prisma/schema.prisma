@@ -20,16 +20,16 @@ model User {
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  token      String   @unique
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  lastSeenAt DateTime @default(now())
-  expiresAt  DateTime?
-  ip         String   @default("unknown")
-  userAgent  String   @default("unknown")
+  id         Int       @id @default(autoincrement())
+  token      String    @unique
+  createdAt  DateTime  @default(now())
   userId     Int
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt  DateTime  @updatedAt
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime?
+  ip         String    @default("unknown")
+  userAgent  String    @default("unknown")
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([expiresAt])
@@ -46,4 +46,43 @@ model LoginHistory {
 
   @@index([userId])
   @@index([createdAt])
+}
+
+model Games {
+  slug                        String    @unique
+  name                        String?
+  released                    DateTime?
+  background_image            String?
+  playtime                    Int?
+  suggestions_count           Int?
+  metacritic_url              String?
+  name_original               String?
+  background_image_additional String?
+  website                     String?
+  screenshots_count           Int?
+  description                 String?
+  description_raw             String?
+  metacritic                  Int?
+  achievements_count          Int?
+  parent_achievements_count   Int?
+  game_series_count           Int?
+  additions_count             Int?
+  movies_count                Int?
+  reddit_url                  String?
+  reddit_name                 String?
+  reddit_description          String?
+  reddit_logo                 String?
+  platforms                   String?
+  stores                      String?
+  developers                  String?
+  genres                      String?
+  publishers                  String?
+  tags                        String?
+  esrb_rating                 String?
+  short_screenshots           String?
+  metacritic_platforms        String?
+  parent_platforms            String?
+  alternative_names           String?
+  tba                         String?
+  rawg_id                     Int?      @unique
 }

@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/dist/client/components/navigation";
-import Link from "next/dist/client/link";
-import * as React from "react";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import Link from "next/dist/client/link";
 import { getServerSession } from "next-auth/next";
 import { Gamepad2 } from "lucide-react";
 
