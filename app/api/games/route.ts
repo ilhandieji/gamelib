@@ -1,46 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { z } from "zod";
+import { GameSearchQuery, GameSearchService } from "@/lib/game-search-query";
 
-const paginationQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(100).default(10),
-});
+const gameSearchService = new GameSearchService();
 
-// GET /api/games - Get a paginated list of games
+// GET /api/games - Advanced search and filtering for games
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const parsedQuery = paginationQuerySchema.safeParse({
-      page: searchParams.get("page"),
-      limit: searchParams.get("limit"),
-    });
+    const searchQuery = new GameSearchQuery(searchParams);
+    const criteria = searchQuery.parse();
 
-    const page = parsedQuery.success ? parsedQuery.data.page : 1;
-    const limit = parsedQuery.success ? parsedQuery.data.limit : 10;
-    const offset = (page - 1) * limit;
-    const slug = searchParams.get("slug");
-    const filters = slug ? { slug } : {};
+    const searchResult = await gameSearchService.searchGames(criteria);
 
-    const [games, totalGames] = await Promise.all([
-      prisma.games.findMany({
-        where: filters,
-        skip: offset,
-        take: limit,
-        orderBy: { rawg_id: "asc" },
-      }),
-      prisma.games.count({ where: filters }),
-    ]);
-
-    return NextResponse.json({
-      games,
-      pagination: {
-        page,
-        limit,
-        totalGames,
-        totalPages: Math.ceil(totalGames / limit),
-      },
-    });
+    return NextResponse.json(searchResult);
   } catch (error) {
     console.error("Error fetching games:", error);
     return NextResponse.json(

@@ -15,7 +15,7 @@ const login = () => {
             size="lg"
             className="neon-blue text-black"
           >
-            <Link href="/signup">Don't have an account? Sign up</Link>
+            <Link href="/signup">Don&apos;t have an account? Sign up</Link>
           </Button>
         </div>
       </div>
